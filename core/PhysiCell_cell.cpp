@@ -413,8 +413,6 @@ Cell::Cell()
 	
 	phenotype = cell_defaults.phenotype; 
 	
-	phenotype.molecular.sync_to_cell( this ); 
-	
 	// cell state should be fine by the default constructor 
 	
 	current_mechanics_voxel_index=-1;
@@ -573,8 +571,8 @@ Cell* Cell::divide( )
 	
 	// evenly divide internalized substrates 
 	// if these are not actively tracked, they are zero anyway 
-	*internalized_substrates *= 0.5; 
-	*(child->internalized_substrates) = *internalized_substrates ; 
+	phenotype.molecular.internalized_total_substrates *= 0.5; 
+	child->phenotype.molecular.internalized_total_substrates = phenotype.molecular.internalized_total_substrates ; 
 	
 	// The following is already performed by create_cell(). JULY 2017 ***
 	// child->register_microenvironment( get_microenvironment() );
@@ -1401,12 +1399,12 @@ void Cell::ingest_cell( Cell* pCell_to_eat )
 		// absorb the internalized substrates 
 		
 		// multiply by the fraction that is supposed to be ingested (for each substrate) 
-		*(pCell_to_eat->internalized_substrates) *= 
-			*(pCell_to_eat->fraction_transferred_when_ingested); // 
+		pCell_to_eat->phenotype.molecular.internalized_total_substrates *= 
+			pCell_to_eat->phenotype.molecular.fraction_transferred_when_ingested; // 
 		
-		*internalized_substrates += *(pCell_to_eat->internalized_substrates); 
-		static int n_substrates = internalized_substrates->size(); 
-		pCell_to_eat->internalized_substrates->assign( n_substrates , 0.0 ); 	
+		phenotype.molecular.internalized_total_substrates += pCell_to_eat->phenotype.molecular.internalized_total_substrates; 
+		static int n_substrates = phenotype.molecular.internalized_total_substrates.size(); 
+		pCell_to_eat->phenotype.molecular.internalized_total_substrates.assign( n_substrates , 0.0 ); 	
 		
 		// trigger removal from the simulation 
 		// pCell_to_eat->die(); // I don't think this is safe if it's in an OpenMP loop 
@@ -1550,9 +1548,9 @@ void Cell::fuse_cell( Cell* pCell_to_fuse )
 
 		// absorb the internalized substrates 
 		
-		*internalized_substrates += *(pCell_to_fuse->internalized_substrates); 
-		static int n_substrates = internalized_substrates->size(); 
-		pCell_to_fuse->internalized_substrates->assign( n_substrates , 0.0 ); 	
+		phenotype.molecular.internalized_total_substrates += pCell_to_fuse->phenotype.molecular.internalized_total_substrates; 
+		static int n_substrates = phenotype.molecular.internalized_total_substrates.size(); 
+		pCell_to_fuse->phenotype.molecular.internalized_total_substrates.assign( n_substrates , 0.0 ); 	
 
 		// set target volume(s)
 

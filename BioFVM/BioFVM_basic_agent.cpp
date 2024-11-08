@@ -74,9 +74,6 @@ Basic_Agent::Basic_Agent(Agent_Phenotype* pphenotype)
 	// extern Microenvironment* default_microenvironment;
 	// register_microenvironment( default_microenvironment ); 
 
-	internalized_substrates = new std::vector<double>(0); // 
-	fraction_released_at_death = new std::vector<double>(0); 
-	fraction_transferred_when_ingested = new std::vector<double>(0); 
 	register_microenvironment( get_default_microenvironment() );
 	
 	// these are done in register_microenvironment
@@ -183,11 +180,7 @@ void Basic_Agent::register_microenvironment( Microenvironment* microenvironment_
 	cell_source_sink_solver_temp_export2.resize( microenvironment->density_vector(0).size() , 0.0 );
 
 	// new for internalized substrate tracking 
-	internalized_substrates->resize( microenvironment->density_vector(0).size() , 0.0 );
 	total_extracellular_substrate_change.resize( microenvironment->density_vector(0).size() , 1.0 );
-	
-	fraction_released_at_death->resize( microenvironment->density_vector(0).size() , 0.0 ); 
-	fraction_transferred_when_ingested->resize( microenvironment->density_vector(0).size() , 0.0 ); 
 
 	return; 
 }
@@ -202,16 +195,16 @@ void Basic_Agent::release_internalized_substrates( void )
 	// density_ext += fraction * total_internal / vol_volume 
 	
 	// std::cout << "\t\t\t" << (*pS)(current_voxel_index) << "\t\t\t" << std::endl; 
-	*internalized_substrates /=  pS->voxels(current_voxel_index).volume; // turn to density 
-	*internalized_substrates *= *fraction_released_at_death;  // what fraction is released? 
+	phenotype.molecular.internalized_total_substrates /=  pS->voxels(current_voxel_index).volume; // turn to density 
+	phenotype.molecular.internalized_total_substrates *= phenotype.molecular.fraction_released_at_death;  // what fraction is released? 
 	
 	// release this amount into the environment 
 	
-	(*pS)(current_voxel_index) += *internalized_substrates; 
+	(*pS)(current_voxel_index) += phenotype.molecular.internalized_total_substrates; 
 	
 	// zero out the now-removed substrates 
 	
-	internalized_substrates->assign( internalized_substrates->size() , 0.0 ); 
+	phenotype.molecular.internalized_total_substrates.assign( phenotype.molecular.internalized_total_substrates.size() , 0.0 ); 
 	
 	return; 
 }
@@ -322,7 +315,7 @@ void Basic_Agent::simulate_secretion_and_uptake( Microenvironment* pS, double dt
 		total_extracellular_substrate_change /= cell_source_sink_solver_temp2; // ((1-c2)*rho+c1)/c2
 		total_extracellular_substrate_change *= pS->voxels(current_voxel_index).volume; // W*((1-c2)*rho+c1)/c2 
 		
-		*internalized_substrates -= total_extracellular_substrate_change; // opposite of net extracellular change 	
+		phenotype.molecular.internalized_total_substrates -= total_extracellular_substrate_change; // opposite of net extracellular change 	
 	}
 	
 	(*pS)(current_voxel_index) += cell_source_sink_solver_temp1; 
@@ -332,7 +325,7 @@ void Basic_Agent::simulate_secretion_and_uptake( Microenvironment* pS, double dt
 	(*pS)(current_voxel_index) += cell_source_sink_solver_temp_export2; 
 	if( default_microenvironment_options.track_internalized_substrates_in_each_agent == true ) 
 	{
-		*internalized_substrates -= cell_source_sink_solver_temp_export1; 
+		phenotype.molecular.internalized_total_substrates -= cell_source_sink_solver_temp_export1; 
 	}
 
 	return; 
