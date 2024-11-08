@@ -1,0 +1,147 @@
+[
+    {
+        "command": "c++ -c -march=native -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 ./BioFVM/BioFVM_vector.cpp",
+        "directory": "/home/asmelko/Desktop/PhysiCell",
+        "file": "/home/asmelko/Desktop/PhysiCell/BioFVM/BioFVM_vector.cpp"
+    },
+    {
+        "command": "c++ -c -march=native -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 ./BioFVM/BioFVM_mesh.cpp",
+        "directory": "/home/asmelko/Desktop/PhysiCell",
+        "file": "/home/asmelko/Desktop/PhysiCell/BioFVM/BioFVM_mesh.cpp"
+    },
+    {
+        "command": "c++ -c -march=native -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 ./BioFVM/BioFVM_microenvironment.cpp",
+        "directory": "/home/asmelko/Desktop/PhysiCell",
+        "file": "/home/asmelko/Desktop/PhysiCell/BioFVM/BioFVM_microenvironment.cpp"
+    },
+    {
+        "command": "c++ -c -march=native -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 ./BioFVM/BioFVM_solvers.cpp",
+        "directory": "/home/asmelko/Desktop/PhysiCell",
+        "file": "/home/asmelko/Desktop/PhysiCell/BioFVM/BioFVM_solvers.cpp"
+    },
+    {
+        "command": "c++ -c -march=native -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 ./BioFVM/BioFVM_matlab.cpp",
+        "directory": "/home/asmelko/Desktop/PhysiCell",
+        "file": "/home/asmelko/Desktop/PhysiCell/BioFVM/BioFVM_matlab.cpp"
+    },
+    {
+        "command": "c++ -c -march=native -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 ./BioFVM/BioFVM_utilities.cpp",
+        "directory": "/home/asmelko/Desktop/PhysiCell",
+        "file": "/home/asmelko/Desktop/PhysiCell/BioFVM/BioFVM_utilities.cpp"
+    },
+    {
+        "command": "c++ -c -march=native -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 ./BioFVM/BioFVM_basic_agent.cpp",
+        "directory": "/home/asmelko/Desktop/PhysiCell",
+        "file": "/home/asmelko/Desktop/PhysiCell/BioFVM/BioFVM_basic_agent.cpp"
+    },
+    {
+        "command": "c++ -c -march=native -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 ./BioFVM/BioFVM_MultiCellDS.cpp",
+        "directory": "/home/asmelko/Desktop/PhysiCell",
+        "file": "/home/asmelko/Desktop/PhysiCell/BioFVM/BioFVM_MultiCellDS.cpp"
+    },
+    {
+        "command": "c++ -c -march=native -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 ./BioFVM/BioFVM_agent_container.cpp",
+        "directory": "/home/asmelko/Desktop/PhysiCell",
+        "file": "/home/asmelko/Desktop/PhysiCell/BioFVM/BioFVM_agent_container.cpp"
+    },
+    {
+        "command": "c++ -c -march=native -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 ./BioFVM/pugixml.cpp",
+        "directory": "/home/asmelko/Desktop/PhysiCell",
+        "file": "/home/asmelko/Desktop/PhysiCell/BioFVM/pugixml.cpp"
+    },
+    {
+        "command": "c++ -c -march=native -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 ./core/PhysiCell_phenotype.cpp",
+        "directory": "/home/asmelko/Desktop/PhysiCell",
+        "file": "/home/asmelko/Desktop/PhysiCell/core/PhysiCell_phenotype.cpp"
+    },
+    {
+        "command": "c++ -c -march=native -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 ./core/PhysiCell_cell_container.cpp",
+        "directory": "/home/asmelko/Desktop/PhysiCell",
+        "file": "/home/asmelko/Desktop/PhysiCell/core/PhysiCell_cell_container.cpp"
+    },
+    {
+        "command": "c++ -c -march=native -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 ./core/PhysiCell_standard_models.cpp",
+        "directory": "/home/asmelko/Desktop/PhysiCell",
+        "file": "/home/asmelko/Desktop/PhysiCell/core/PhysiCell_standard_models.cpp"
+    },
+    {
+        "command": "c++ -c -march=native -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 ./core/PhysiCell_cell.cpp",
+        "directory": "/home/asmelko/Desktop/PhysiCell",
+        "file": "/home/asmelko/Desktop/PhysiCell/core/PhysiCell_cell.cpp"
+    },
+    {
+        "command": "c++ -c -march=native -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 ./core/PhysiCell_custom.cpp",
+        "directory": "/home/asmelko/Desktop/PhysiCell",
+        "file": "/home/asmelko/Desktop/PhysiCell/core/PhysiCell_custom.cpp"
+    },
+    {
+        "command": "c++ -c -march=native -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 ./core/PhysiCell_utilities.cpp",
+        "directory": "/home/asmelko/Desktop/PhysiCell",
+        "file": "/home/asmelko/Desktop/PhysiCell/core/PhysiCell_utilities.cpp"
+    },
+    {
+        "command": "c++ -c -march=native -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 ./core/PhysiCell_constants.cpp",
+        "directory": "/home/asmelko/Desktop/PhysiCell",
+        "file": "/home/asmelko/Desktop/PhysiCell/core/PhysiCell_constants.cpp"
+    },
+    {
+        "command": "c++ -c -march=native -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 ./core/PhysiCell_basic_signaling.cpp",
+        "directory": "/home/asmelko/Desktop/PhysiCell",
+        "file": "/home/asmelko/Desktop/PhysiCell/core/PhysiCell_basic_signaling.cpp"
+    },
+    {
+        "command": "c++ -c -march=native -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 ./core/PhysiCell_signal_behavior.cpp",
+        "directory": "/home/asmelko/Desktop/PhysiCell",
+        "file": "/home/asmelko/Desktop/PhysiCell/core/PhysiCell_signal_behavior.cpp"
+    },
+    {
+        "command": "c++ -c -march=native -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 ./core/PhysiCell_rules.cpp",
+        "directory": "/home/asmelko/Desktop/PhysiCell",
+        "file": "/home/asmelko/Desktop/PhysiCell/core/PhysiCell_rules.cpp"
+    },
+    {
+        "command": "c++ -c -march=native -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 ./modules/PhysiCell_SVG.cpp",
+        "directory": "/home/asmelko/Desktop/PhysiCell",
+        "file": "/home/asmelko/Desktop/PhysiCell/modules/PhysiCell_SVG.cpp"
+    },
+    {
+        "command": "c++ -c -march=native -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 ./modules/PhysiCell_pathology.cpp",
+        "directory": "/home/asmelko/Desktop/PhysiCell",
+        "file": "/home/asmelko/Desktop/PhysiCell/modules/PhysiCell_pathology.cpp"
+    },
+    {
+        "command": "c++ -c -march=native -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 ./modules/PhysiCell_MultiCellDS.cpp",
+        "directory": "/home/asmelko/Desktop/PhysiCell",
+        "file": "/home/asmelko/Desktop/PhysiCell/modules/PhysiCell_MultiCellDS.cpp"
+    },
+    {
+        "command": "c++ -c -march=native -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 ./modules/PhysiCell_various_outputs.cpp",
+        "directory": "/home/asmelko/Desktop/PhysiCell",
+        "file": "/home/asmelko/Desktop/PhysiCell/modules/PhysiCell_various_outputs.cpp"
+    },
+    {
+        "command": "c++ -c -march=native -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 ./modules/PhysiCell_pugixml.cpp",
+        "directory": "/home/asmelko/Desktop/PhysiCell",
+        "file": "/home/asmelko/Desktop/PhysiCell/modules/PhysiCell_pugixml.cpp"
+    },
+    {
+        "command": "c++ -c -march=native -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 ./modules/PhysiCell_settings.cpp",
+        "directory": "/home/asmelko/Desktop/PhysiCell",
+        "file": "/home/asmelko/Desktop/PhysiCell/modules/PhysiCell_settings.cpp"
+    },
+    {
+        "command": "c++ -c -march=native -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 ./modules/PhysiCell_geometry.cpp",
+        "directory": "/home/asmelko/Desktop/PhysiCell",
+        "file": "/home/asmelko/Desktop/PhysiCell/modules/PhysiCell_geometry.cpp"
+    },
+    {
+        "command": "c++ -c -march=native -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 ./custom_modules/custom.cpp",
+        "directory": "/home/asmelko/Desktop/PhysiCell",
+        "file": "/home/asmelko/Desktop/PhysiCell/custom_modules/custom.cpp"
+    },
+    {
+        "command": "c++ -c -march=native -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11 -o project BioFVM_vector.o BioFVM_mesh.o BioFVM_microenvironment.o BioFVM_solvers.o BioFVM_matlab.o BioFVM_utilities.o BioFVM_basic_agent.o BioFVM_MultiCellDS.o BioFVM_agent_container.o pugixml.o PhysiCell_phenotype.o PhysiCell_cell_container.o PhysiCell_standard_models.o PhysiCell_cell.o PhysiCell_custom.o PhysiCell_utilities.o PhysiCell_constants.o PhysiCell_basic_signaling.o PhysiCell_signal_behavior.o PhysiCell_rules.o PhysiCell_SVG.o PhysiCell_pathology.o PhysiCell_MultiCellDS.o PhysiCell_various_outputs.o PhysiCell_pugixml.o PhysiCell_settings.o PhysiCell_geometry.o custom.o main.cpp",
+        "directory": "/home/asmelko/Desktop/PhysiCell",
+        "file": "/home/asmelko/Desktop/PhysiCell/main.cpp"
+    }
+]
