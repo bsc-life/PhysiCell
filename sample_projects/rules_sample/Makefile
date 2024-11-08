@@ -52,7 +52,7 @@ CFLAGS_LINK := $(shell echo $(CFLAGS) | sed -e "s/-fopenmp//g")
 COMPILE_COMMAND := $(CC) $(CFLAGS)  $(EXTRA_FLAGS)
 LINK_COMMAND := $(CC) $(CFLAGS_LINK) $(EXTRA_FLAGS)
 
-BioFVM_OBJECTS := BioFVM_vector.o BioFVM_mesh.o BioFVM_microenvironment.o BioFVM_solvers.o BioFVM_matlab.o \
+BioFVM_OBJECTS := BioFVM_agent_phenotype.o BioFVM_vector.o BioFVM_mesh.o BioFVM_microenvironment.o BioFVM_solvers.o BioFVM_matlab.o \
 BioFVM_utilities.o BioFVM_basic_agent.o BioFVM_MultiCellDS.o BioFVM_agent_container.o 
 
 PhysiCell_core_OBJECTS := PhysiCell_phenotype.o PhysiCell_cell_container.o PhysiCell_standard_models.o \
@@ -139,6 +139,9 @@ BioFVM_utilities.o: ./BioFVM/BioFVM_utilities.cpp
 	
 BioFVM_basic_agent.o: ./BioFVM/BioFVM_basic_agent.cpp
 	$(COMPILE_COMMAND) -c ./BioFVM/BioFVM_basic_agent.cpp 
+
+BioFVM_agent_phenotype.o: ./BioFVM/BioFVM_agent_phenotype.cpp
+	$(COMPILE_COMMAND) -c ./BioFVM/BioFVM_agent_phenotype.cpp
 	
 BioFVM_matlab.o: ./BioFVM/BioFVM_matlab.cpp
 	$(COMPILE_COMMAND) -c ./BioFVM/BioFVM_matlab.cpp

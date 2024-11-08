@@ -18,7 +18,7 @@ CFLAGS := -march=$(ARCH) -O3 -fomit-frame-pointer -mfpmath=both -fopenmp -m64 -s
 COMPILE_COMMAND := $(CC) $(CFLAGS) 
 
 DIR := ../..
-BioFVM_OBJECTS := $(DIR)/BioFVM_vector.o $(DIR)/BioFVM_mesh.o $(DIR)/BioFVM_microenvironment.o $(DIR)/BioFVM_solvers.o $(DIR)/BioFVM_matlab.o \
+BioFVM_OBJECTS := BioFVM_agent_phenotype.o $(DIR)/BioFVM_vector.o $(DIR)/BioFVM_mesh.o $(DIR)/BioFVM_microenvironment.o $(DIR)/BioFVM_solvers.o $(DIR)/BioFVM_matlab.o \
 $(DIR)/BioFVM_utilities.o $(DIR)/BioFVM_basic_agent.o $(DIR)/BioFVM_MultiCellDS.o $(DIR)/BioFVM_agent_container.o 
 
 PhysiCell_core_OBJECTS := $(DIR)/PhysiCell_phenotype.o $(DIR)/PhysiCell_cell_container.o $(DIR)/PhysiCell_standard_models.o $(DIR)/PhysiCell_cell.o $(DIR)/PhysiCell_custom.o $(DIR)/PhysiCell_utilities.o 

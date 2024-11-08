@@ -130,6 +130,9 @@ BioFVM_utilities.o: ./BioFVM/BioFVM_utilities.cpp
 	
 BioFVM_basic_agent.o: ./BioFVM/BioFVM_basic_agent.cpp
 	$(COMPILE_COMMAND) -c ./BioFVM/BioFVM_basic_agent.cpp 
+
+BioFVM_agent_phenotype.o: ./BioFVM/BioFVM_agent_phenotype.cpp
+	$(COMPILE_COMMAND) -c ./BioFVM/BioFVM_agent_phenotype.cpp
 	
 BioFVM_matlab.o: ./BioFVM/BioFVM_matlab.cpp
 	$(COMPILE_COMMAND) -c ./BioFVM/BioFVM_matlab.cpp
