@@ -67,6 +67,7 @@
 
 #include "PhysiCell_cell.h"
 #include "PhysiCell_cell_container.h"
+#include "PhysiCell_phenotype.h"
 #include "PhysiCell_utilities.h"
 #include "PhysiCell_constants.h"
 #include "../BioFVM/BioFVM_vector.h" 
@@ -399,6 +400,7 @@ void Cell::advance_bundled_phenotype_functions( double dt_ )
 }
 
 Cell::Cell()
+	: Basic_Agent(new Phenotype()), phenotype(*dynamic_cast<Phenotype*>(this->phenotype_impl))
 {
 	// use the cell defaults; 
 	

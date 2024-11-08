@@ -49,12 +49,14 @@
 #include "BioFVM_basic_agent.h"
 #include "BioFVM_agent_container.h"
 #include "BioFVM_vector.h" 
+#include "BioFVM_agent_phenotype.h"
 
 namespace BioFVM{
 
 std::vector<Basic_Agent*> all_basic_agents(0); 
 
-Basic_Agent::Basic_Agent()
+Basic_Agent::Basic_Agent(Agent_Phenotype* pphenotype)
+	: phenotype_impl(pphenotype), phenotype(*pphenotype) 
 {
 	//give the agent a unique ID  
 	static int max_basic_agent_ID = 0; 
@@ -62,17 +64,13 @@ Basic_Agent::Basic_Agent()
 	max_basic_agent_ID++; 
 	// initialize position and velocity
 	is_active=true;
-	
+
 	volume = 1.0; 
 	
 	position.assign( 3 , 0.0 ); 
 	velocity.assign( 3 , 0.0 );
 	previous_velocity.assign( 3 , 0.0 ); 
-	// link into the microenvironment, if one is defined 
-	secretion_rates= new std::vector<double>(0);
-	uptake_rates= new std::vector<double>(0);
-	saturation_densities= new std::vector<double>(0);
-	net_export_rates = new std::vector<double>(0); 
+	
 	// extern Microenvironment* default_microenvironment;
 	// register_microenvironment( default_microenvironment ); 
 
@@ -86,6 +84,9 @@ Basic_Agent::Basic_Agent()
 	
 	return;	
 }
+
+Basic_Agent::Basic_Agent()
+	: Basic_Agent( new Agent_Phenotype() ) { }
 
 void Basic_Agent::update_position(double dt){ 
 //make sure to update current_voxel_index if you are implementing this function
@@ -145,20 +146,20 @@ void Basic_Agent::set_internal_uptake_constants( double dt )
 	double internal_constant_to_discretize_the_delta_approximation = dt * volume / ( (microenvironment->voxels(current_voxel_index)).volume ) ; // needs a fix 
 	
 	// temp1 = dt*(V_cell/V_voxel)*S*T 
-	cell_source_sink_solver_temp1.assign( (*secretion_rates).size() , 0.0 ); 
-	cell_source_sink_solver_temp1 += *secretion_rates; 
-	cell_source_sink_solver_temp1 *= *saturation_densities; 
+	cell_source_sink_solver_temp1.assign( phenotype.secretion.secretion_rates.size() , 0.0 ); 
+	cell_source_sink_solver_temp1 += phenotype.secretion.secretion_rates; 
+	cell_source_sink_solver_temp1 *= phenotype.secretion.saturation_densities; 
 	cell_source_sink_solver_temp1 *= internal_constant_to_discretize_the_delta_approximation; 
 	
 //	total_extracellular_substrate_change.assign( (*secretion_rates).size() , 1.0 ); 
 
 	// temp2 = 1 + dt*(V_cell/V_voxel)*( S + U )
-	cell_source_sink_solver_temp2.assign( (*secretion_rates).size() , 1.0 ); 
-	axpy( &(cell_source_sink_solver_temp2) , internal_constant_to_discretize_the_delta_approximation , *secretion_rates );
-	axpy( &(cell_source_sink_solver_temp2) , internal_constant_to_discretize_the_delta_approximation , *uptake_rates );	
+	cell_source_sink_solver_temp2.assign( phenotype.secretion.secretion_rates.size() , 1.0 ); 
+	axpy( &(cell_source_sink_solver_temp2) , internal_constant_to_discretize_the_delta_approximation , phenotype.secretion.secretion_rates );
+	axpy( &(cell_source_sink_solver_temp2) , internal_constant_to_discretize_the_delta_approximation , phenotype.secretion.uptake_rates );	
 	
 	// temp for net export 
-	cell_source_sink_solver_temp_export1 = *net_export_rates; 
+	cell_source_sink_solver_temp_export1 = phenotype.secretion.net_export_rates; 
 	cell_source_sink_solver_temp_export1 *= dt; // amount exported in dt of time 
 		
 	cell_source_sink_solver_temp_export2 = cell_source_sink_solver_temp_export1;
@@ -172,11 +173,7 @@ void Basic_Agent::set_internal_uptake_constants( double dt )
 
 void Basic_Agent::register_microenvironment( Microenvironment* microenvironment_in )
 {
-	microenvironment = microenvironment_in; 	
-	secretion_rates->resize( microenvironment->density_vector(0).size() , 0.0 );
-	saturation_densities->resize( microenvironment->density_vector(0).size() , 0.0 );
-	uptake_rates->resize( microenvironment->density_vector(0).size() , 0.0 );	
-	net_export_rates->resize( microenvironment->density_vector(0).size() , 0.0 ); 
+	microenvironment = microenvironment_in; 	 
 
 	// some solver temporary variables 
 	cell_source_sink_solver_temp1.resize( microenvironment->density_vector(0).size() , 0.0 );

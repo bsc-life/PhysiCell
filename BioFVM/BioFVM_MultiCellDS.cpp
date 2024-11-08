@@ -930,11 +930,11 @@ void add_BioFVM_agents_to_open_xml_pugi( pugi::xml_document& xml_dom, std::strin
 			// add variables and their source/sink/saturation values (per-cell basis)
 			for( unsigned int j=0; j < M.number_of_densities() ; j++ ) 
 			{
-				double dTemp = all_basic_agents[i]->get_total_volume() * (*all_basic_agents[i]->secretion_rates)[j]; 
+				double dTemp = all_basic_agents[i]->get_total_volume() * all_basic_agents[i]->phenotype.secretion.secretion_rates[j]; 
 				fwrite( (char*) &( dTemp ) , sizeof(double) , 1 , fp ); 
-				dTemp = all_basic_agents[i]->get_total_volume() * (*all_basic_agents[i]->uptake_rates)[j]; 
+				dTemp = all_basic_agents[i]->get_total_volume() * all_basic_agents[i]->phenotype.secretion.uptake_rates[j]; 
 				fwrite( (char*) &( dTemp ) , sizeof(double) , 1 , fp ); 
-				dTemp = (*all_basic_agents[i]->saturation_densities)[j]; 
+				dTemp = all_basic_agents[i]->phenotype.secretion.saturation_densities[j]; 
 				fwrite( (char*) &( dTemp ) , sizeof(double) , 1 , fp ); 
 			}
 			
@@ -984,21 +984,21 @@ void add_BioFVM_agents_to_open_xml_pugi( pugi::xml_document& xml_dom, std::strin
 			node = node.append_child( "export_rate" ); 
 			attrib = node.append_attribute( "units" ); 
 			attrib.set_value( rate_chars ); 
-			sprintf( temp , "%f" , all_basic_agents[i]->get_total_volume() * (*all_basic_agents[i]->secretion_rates)[j] ); 
+			sprintf( temp , "%f" , all_basic_agents[i]->get_total_volume() * all_basic_agents[i]->phenotype.secretion.secretion_rates[j] ); 
 			node.append_child( pugi::node_pcdata ).set_value( temp ); 
 			node = node.parent( ); 
 			
 			node = node.append_child( "import_rate" ); 
 			attrib = node.append_attribute( "units" ); 
 			attrib.set_value( rate_chars ); 
-			sprintf( temp,  "%f" , all_basic_agents[i]->get_total_volume() * (*all_basic_agents[i]->uptake_rates)[j] ); 
+			sprintf( temp,  "%f" , all_basic_agents[i]->get_total_volume() * all_basic_agents[i]->phenotype.secretion.uptake_rates[j] ); 
 			node.append_child( pugi::node_pcdata ).set_value( temp ); 
 			node = node.parent(); 
 			
 			node = node.append_child( "saturation_density" ); 
 			attrib = node.append_attribute( "units" ); 
 			attrib.set_value( M.density_units[j].c_str() ); 
-			sprintf( temp, "%f" , (*all_basic_agents[i]->saturation_densities)[j] ); 
+			sprintf( temp, "%f" , all_basic_agents[i]->phenotype.secretion.saturation_densities[j] ); 
 			node.append_child( pugi::node_pcdata ).set_value( temp ); 
 			node = node.parent(); 
 			

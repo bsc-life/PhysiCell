@@ -176,7 +176,7 @@ class Cell : public Basic_Agent
 	Cell_Functions functions; 
 
 	Cell_State state; 
-	Phenotype phenotype; 
+	Phenotype& phenotype; 
 	
 	void update_motility_vector( double dt_ );
 	void advance_bundled_phenotype_functions( double dt_ ); 

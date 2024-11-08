@@ -77,6 +77,8 @@
 
 #include "../modules/PhysiCell_settings.h"
 
+#include "../BioFVM/BioFVM_agent_phenotype.h"
+
 using namespace BioFVM; 
 
 namespace PhysiCell{
@@ -434,42 +436,6 @@ class Motility
 	Motility(); // done 
 };
 
-class Secretion
-{
- private:
- public:
-	Microenvironment* pMicroenvironment; 
-	
-	std::vector<double> secretion_rates; 
-	std::vector<double> uptake_rates; 
-	std::vector<double> saturation_densities;
-	std::vector<double> net_export_rates; 
-	
-	// in the default constructor, we'll size to the default microenvironment, if 
-	// specified. (This ties to BioFVM.) 
-	Secretion(); // done 
-
-	// use this to properly size the secretion parameters to the microenvironment in 
-	// pMicroenvironment
-	void sync_to_current_microenvironment( void ); // done 
-	
-	void advance( Basic_Agent* pCell, Phenotype& phenotype , double dt ); 
-	
-	// use this to properly size the secretion parameters to the microenvironment 
-	void sync_to_microenvironment( Microenvironment* pNew_Microenvironment ); // done 
-	
-	void set_all_secretion_to_zero( void ); // NEW
-	void set_all_uptake_to_zero( void ); // NEW
-	void scale_all_secretion_by_factor( double factor ); // NEW
-	void scale_all_uptake_by_factor( double factor ); // NEW
-
-	// ease of access
-	double& secretion_rate( std::string name ); 
-	double& uptake_rate( std::string name ); 
-	double& saturation_density( std::string name ); 
-	double& net_export_rate( std::string name );  	
-};
-
 class Cell_Functions
 {
  private:
@@ -749,7 +715,7 @@ class Cell_Integrity
 	void advance_damage( double dt ); 
 };
 
-class Phenotype
+class Phenotype : public Agent_Phenotype
 {
  private:
  public:
@@ -762,7 +728,6 @@ class Phenotype
 	Geometry geometry; 
 	Mechanics mechanics; 
 	Motility motility; 
-	Secretion secretion; 
 	
 	Molecular molecular; 
 

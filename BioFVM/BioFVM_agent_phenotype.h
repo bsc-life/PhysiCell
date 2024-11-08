@@ -46,99 +46,62 @@
 #############################################################################
 */
 
-#ifndef __BioFVM_basic_agent_h__
-#define __BioFVM_basic_agent_h__
+#ifndef __BioFVM_agent_phenotype_h__
+#define __BioFVM_agent_phenotype_h__
 
-#include <vector>
+#include <string>
+
 #include "BioFVM_microenvironment.h"
-#include "BioFVM_matlab.h"
-#include "BioFVM_vector.h"
-#include "BioFVM_agent_phenotype.h"
 
-namespace BioFVM{
+namespace BioFVM
+{
 
-class Basic_Agent
+class Agent_Phenotype;
+
+class Secretion
 {
  private:
-	Microenvironment* microenvironment; 
-	int selected_microenvironment; 
-	
-	int current_microenvironment_voxel_index;
-	double volume;
-	bool volume_is_changed;
-	int current_voxel_index;	
-	
- protected:
-	std::vector<double> cell_source_sink_solver_temp1;
-	std::vector<double> cell_source_sink_solver_temp2;
-	std::vector<double> cell_source_sink_solver_temp_export1; 
-	std::vector<double> cell_source_sink_solver_temp_export2; 	
-	std::vector<double> previous_velocity; 
-//	bool is_active;
-	
-	std::vector<double> total_extracellular_substrate_change; 
-
-	Agent_Phenotype* phenotype_impl;
-
-	Basic_Agent(Agent_Phenotype* phenotype);
-	
  public:
-	bool is_active;
-	Agent_Phenotype& phenotype;
-
-	double get_total_volume();
-	void set_total_volume(double);
-	void update_voxel_index();
-
-	/* new for internalized substrates in 1.5.0 */ 
-	std::vector<double> * internalized_substrates; 
-	std::vector<double> * fraction_released_at_death; 
-	std::vector<double> * fraction_transferred_when_ingested; 
-	void release_internalized_substrates( void ); 
-
-	void set_internal_uptake_constants( double dt ); // any time you update the cell volume or rates, should call this function. 
-
-	void register_microenvironment( Microenvironment* );
-	Microenvironment* get_microenvironment( void ); 
-
-	int ID; 
-	int index; 
-	int type;
+	Microenvironment* pMicroenvironment; 
 	
-	bool assign_position(double x, double y, double z);
-	bool assign_position(std::vector<double> new_position);
+	std::vector<double> secretion_rates; 
+	std::vector<double> uptake_rates; 
+	std::vector<double> saturation_densities;
+	std::vector<double> net_export_rates; 
 	
-	std::vector<double> position;  
-	std::vector<double> velocity; 
-	void update_position( double dt );
-	
-	Basic_Agent(); 
-	virtual ~Basic_Agent(){};
-	// simulate secretion and uptake at the nearest voxel at the indicated microenvironment.
-	// if no microenvironment indicated, use the currently selected microenvironment. 
-	void simulate_secretion_and_uptake( Microenvironment* M, double dt ); 
+	// in the default constructor, we'll size to the default microenvironment, if 
+	// specified. (This ties to BioFVM.) 
+	Secretion(); // done 
 
-	int get_current_voxel_index( void ); 
-	// directly access the substrate vector at the nearest voxel at the indicated microenvironment 
-	std::vector<double>& nearest_density_vector( int microenvironment_index ); // not implemented!
-	std::vector<double>& nearest_density_vector( void );
+	// use this to properly size the secretion parameters to the microenvironment in 
+	// pMicroenvironment
+	void sync_to_current_microenvironment( void ); // done 
 	
-	// directly access the gradient of substrate n nearest to the cell 
-	std::vector<double>& nearest_gradient( int substrate_index );
-	// directly access a vector of gradients, one gradient per substrate 
-	std::vector<gradient>& nearest_gradient_vector( void ); 
+	void advance( Basic_Agent* pCell, Agent_Phenotype& phenotype , double dt ); 
 	
-	const std::vector<double>& get_previous_velocity( void );
+	// use this to properly size the secretion parameters to the microenvironment 
+	void sync_to_microenvironment( Microenvironment* pNew_Microenvironment ); // done 
+	
+	void set_all_secretion_to_zero( void ); // NEW
+	void set_all_uptake_to_zero( void ); // NEW
+	void scale_all_secretion_by_factor( double factor ); // NEW
+	void scale_all_uptake_by_factor( double factor ); // NEW
+
+	// ease of access
+	double& secretion_rate( std::string name ); 
+	double& uptake_rate( std::string name ); 
+	double& saturation_density( std::string name ); 
+	double& net_export_rate( std::string name );  	
 };
 
-extern std::vector<Basic_Agent*> all_basic_agents; 
+class Agent_Phenotype
+{
+public:
+    Secretion secretion;
 
-Basic_Agent* create_basic_agent( void );
-void delete_basic_agent( int ); 
-void delete_basic_agent( Basic_Agent* ); 
-void save_all_basic_agents_to_matlab( std::string filename ); 
-
+	virtual ~Agent_Phenotype() = default;
 };
+
+}
 
 #endif
-
