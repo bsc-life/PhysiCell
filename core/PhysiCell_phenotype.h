@@ -665,8 +665,6 @@ class Phenotype : public Agent_Phenotype
 	Mechanics mechanics; 
 	Motility motility; 
 	
-	Molecular molecular; 
-
 	Cell_Integrity cell_integrity; 
 
     // We need it to be a pointer to allow polymorphism
