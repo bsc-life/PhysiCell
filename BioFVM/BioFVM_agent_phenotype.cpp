@@ -341,4 +341,130 @@ double& Motility::chemotactic_sensitivity( std::string name )
 	return chemotactic_sensitivities[n]; 
 }
 
+Volume::Volume()
+{
+	// reference parameter values for MCF-7, in cubic microns 
+	fluid_fraction = 0.75;  
+
+	total = 2494; 
+	fluid = fluid_fraction * total; 
+	solid = total-fluid; 
+	
+	nuclear = 540.0;
+
+	
+	nuclear_fluid = fluid_fraction * nuclear; 
+	nuclear_solid = nuclear - nuclear_fluid;
+
+	cytoplasmic = total - nuclear;
+	cytoplasmic_fluid = fluid_fraction*cytoplasmic; 
+	cytoplasmic_solid = cytoplasmic - cytoplasmic_fluid; 
+	
+	// rates are in units of 1/min 
+	cytoplasmic_biomass_change_rate = 0.27 / 60.0; 
+	nuclear_biomass_change_rate = 0.33 / 60.0; 
+	fluid_change_rate = 3.0 / 60.0;
+
+	calcified_fraction = 0.0;
+	
+	calcification_rate = 0.0; 
+	
+	target_solid_cytoplasmic = cytoplasmic_solid;
+	target_solid_nuclear = nuclear_solid;
+	target_fluid_fraction = fluid_fraction;
+	
+	cytoplasmic_to_nuclear_ratio = cytoplasmic / ( 1e-16 + nuclear);
+	target_cytoplasmic_to_nuclear_ratio = cytoplasmic_to_nuclear_ratio; 
+	
+	// the cell bursts at these volumes 
+	relative_rupture_volume = 2.0; 
+		// as fraction of volume at entry to the current phase
+	rupture_volume = relative_rupture_volume * total; // in volume units 
+	
+	return; 
+};
+
+
+void Volume::multiply_by_ratio( double ratio )
+{
+	total *= ratio;
+	solid *= ratio;
+	fluid *= ratio;
+	
+	nuclear *= ratio;
+	nuclear_fluid *= ratio;
+	nuclear_solid *= ratio;
+	
+	cytoplasmic *= ratio;
+	cytoplasmic_fluid *= ratio;
+	cytoplasmic_solid *= ratio;
+	
+	rupture_volume *= ratio; 
+	
+	target_solid_nuclear *= ratio;
+	target_solid_cytoplasmic *= ratio; 	
+	
+	return; 
+}
+
+void Volume::divide( void )
+{
+	multiply_by_ratio( 0.5 ); 
+	return; 
+}
+
+
+Geometry::Geometry()
+{
+	// reference values for MCF-7, based on 
+	// volume = 2494 cubic microns
+	// nuclear volume = 540 cubic microns 
+	radius = 8.412710547954228; 
+	nuclear_radius = 5.051670902881889; 
+	surface_area = 889.3685284131693; 
+	
+	polarity = 0.0; 
+	return; 
+}
+
+void Geometry::update_radius( Basic_Agent* pCell, Agent_Phenotype& phenotype, double dt )
+{
+	static double four_thirds_pi =  4.188790204786391;
+	radius = phenotype.volume.total; 
+	radius /= four_thirds_pi; 
+	radius = pow( radius , 0.333333333333333333333333333333333333333 ); 
+	return; 
+}
+
+void Geometry::update_nuclear_radius( Basic_Agent* pCell, Agent_Phenotype& phenotype, double dt )
+{
+	static double four_thirds_pi = 4.188790204786391;
+	nuclear_radius = phenotype.volume.nuclear; 
+	nuclear_radius /= four_thirds_pi; 
+	nuclear_radius = pow( nuclear_radius , 0.333333333333333333333333333333333333333 ); 
+	return; 
+}
+
+void Geometry::update_surface_area( Basic_Agent* pCell, Agent_Phenotype& phenotype, double dt )
+{
+	// 4pi / (4pi/3)^(2/3)
+	static double the_constant = 4.835975862049409; 
+	surface_area = pow( phenotype.volume.total , 0.666666666666667 );
+	surface_area /= the_constant; 
+	
+	return; 
+}
+
+void Geometry::update( Basic_Agent* pCell, Agent_Phenotype& phenotype, double dt )
+{
+	update_radius(pCell,phenotype,dt); 
+	update_nuclear_radius(pCell,phenotype,dt);
+	
+	// surface area = 4*pi*r^2 = (4/3)*pi*r^3 / (r/3)	
+	surface_area = phenotype.volume.total; 
+	surface_area /= radius; 
+	surface_area *= 3.0; 
+	return; 
+}
+
 }

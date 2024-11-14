@@ -282,82 +282,6 @@ class Death
 	double& necrosis_rate(void); 
 };
 
-class Volume
-{
- public:
-	//
-	// state variables 
-	//
-	double total;
-	double solid;
-	double fluid;
-	double fluid_fraction; 
-	
-	double nuclear;
-	double nuclear_fluid;
-	double nuclear_solid; 
-
-	double cytoplasmic;
-	double cytoplasmic_fluid; 
-	double cytoplasmic_solid; 
-	
-	double calcified_fraction;
-	
-	double cytoplasmic_to_nuclear_ratio;
-	
-	double rupture_volume; // in volume units 
-	
-	//
-	// a function that can be set by the user. 
-	//
-	// void (*volume_update_function)( Cell* pCell, Phenotype& phenotype, double dt ); 
-	
-	//
-	// parameters that can be set by users 
-	//
-	double cytoplasmic_biomass_change_rate; 
-	double nuclear_biomass_change_rate; 
-	double fluid_change_rate;
-
-	double calcification_rate; 
-	
-	double target_solid_cytoplasmic;
-	double target_solid_nuclear;
-	double target_fluid_fraction;
-	
-	double target_cytoplasmic_to_nuclear_ratio;
-
-	double relative_rupture_volume; 
-	// the volume ratio (compared to initial volume at time of death) 
-	// at which a cell ruptures / lyses / bursts. 
-
-	//
-	// functions 
-	//
-	Volume(); // done 
-	
-	void divide( void ); // done 
-	void multiply_by_ratio(double); // done 
-};
-
-class Geometry
-{
- public:
-	double radius; 
-	double nuclear_radius; 
-	double surface_area; 
-	
-	double polarity; 
-	
-	Geometry(); // done 
-	
-	void update_radius( Cell* pCell, Phenotype& phenotype, double dt ); // done 
-	void update_nuclear_radius( Cell* pCell, Phenotype& phenotype, double dt ); // done 
-	void update_surface_area( Cell* pCell, Phenotype& phenotype, double dt ); // done 
-	
-	void update( Cell* pCell, Phenotype& phenotype, double dt ); // done 
-};
-
 class Mechanics
 {
  private:
@@ -626,8 +550,6 @@ class Phenotype : public Agent_Phenotype
  
 	Cycle cycle; 
 	Death death; 
-	Volume volume; 
-	Geometry geometry; 
 	Mechanics mechanics; 
 	
 	Cell_Integrity cell_integrity; 

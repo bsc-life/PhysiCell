@@ -656,23 +656,6 @@ void Cell::set_total_volume(double volume)
 {
 	Basic_Agent::set_total_volume(volume);
 	
-	// If the new volume is significantly different than the 
-	// current total volume, adjust all the sub-volumes 
-	// proportionally. 
-	
-	// if( fabs( phenotype.volume.total - volume ) < 1e-16 )
-	if( fabs( phenotype.volume.total - volume ) > 1e-16 )
-	{
-		double ratio= volume/ (phenotype.volume.total + 1e-16);  
-		phenotype.volume.multiply_by_ratio(ratio);
-	}
-	
-	phenotype.geometry.update( this, phenotype, 0.0 ); 
-	// phenotype.update_radius();
-	//if( get_container()->max_cell_interactive_distance_in_voxel[get_current_mechanics_voxel_index()] < 
-	//	phenotype.geometry.radius * parameters.max_interaction_distance_factor )
-
-    	
 	// Here the current mechanics voxel index may not be initialized, when position is still unknown. 
 	if (get_current_mechanics_voxel_index() >= 0)
     {
@@ -686,69 +669,6 @@ void Cell::set_total_volume(double volume)
 	}
 	
 	return; 
-}
-
-
-void Cell::set_target_volume( double new_volume )
-{
-	
-	// this function will keep the prior ratios (from targets)
-	
-	// first compute the actual raw totals on all these things 
-	double old_target_solid = phenotype.volume.target_solid_nuclear + 
-		phenotype.volume.target_solid_cytoplasmic; 
-	double old_target_total = old_target_solid / ( 1.0 - phenotype.volume.target_fluid_fraction ); 
-	double old_target_fluid = phenotype.volume.target_fluid_fraction * old_target_total; 
-	
-	// next whats the relative new size? 
-	double ratio = new_volume / (1e-16 + old_target_total ); 
-	
-	// scale the target solid cyto and target solid nuclear by this ratio 
-	phenotype.volume.target_solid_cytoplasmic *= ratio; 
-	phenotype.volume.target_solid_nuclear *= ratio; 
-	
-	return; 
-}
-
-void Cell::set_target_radius(double new_radius )
-{
-	static double four_thirds_pi =  4.188790204786391;
-
-	// calculate the new target volume 
-	double new_volume = four_thirds_pi; 
-	new_volume *= new_radius; 
-	new_volume *= new_radius; 
-	new_volume *= new_radius; 
-	
-	// now call the set_target_volume funciton 
-	this->set_target_volume( new_volume ); 
-	return; 
-}
-
-void Cell::set_radius(double new_radius )
-{
-	static double four_thirds_pi =  4.188790204786391;
-
-	// calculate the new target volume 
-	double new_volume = four_thirds_pi; 
-	new_volume *= new_radius; 
-	new_volume *= new_radius; 
-	new_volume *= new_radius; 
-	
-	this->set_total_volume( new_volume ); 
-	return; 
-}
-
-double& Cell::get_total_volume(void)
-{
-	static bool I_warned_you = false; 
-	if( I_warned_you == false )
-	{
-		std::cout << "Warning! Do not use " << __FUNCTION__ << "!" << std::endl 
-			<< "Use (some_cell).phenotype.volume.total instead!" << std::endl; 
-		I_warned_you = true; 
-	}
-	return phenotype.volume.total; 
 }
 
 void Cell::turn_off_reactions(double dt)

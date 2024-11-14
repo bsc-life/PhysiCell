@@ -205,12 +205,6 @@ class Cell : public Basic_Agent
 	bool assign_position(double, double, double);
 	void set_total_volume(double);
 	
-	double& get_total_volume(void); // NEW
-	
-	void set_target_volume(double); 
-	void set_target_radius(double); 
-	void set_radius(double); 
-	
 	// mechanics 
 	void update_position( double dt ); //
 	std::vector<double> displacement; // this should be moved to state, or made private  

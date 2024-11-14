@@ -282,17 +282,6 @@ std::vector<gradient>& Basic_Agent::nearest_gradient_vector( void )
 	return microenvironment->gradient_vector(current_voxel_index); 
 }
 
-void Basic_Agent::set_total_volume(double volume)
-{
-	this->volume = volume;
-	volume_is_changed = true;
-}
-
-double Basic_Agent::get_total_volume()
-{
-	return volume;
-}
-
 const std::vector<double>& Basic_Agent::get_previous_velocity( void ) {
 	return previous_velocity;
 }
@@ -391,5 +380,89 @@ void Basic_Agent::update_motility_vector( double dt_ )
 	}	
 	return; 
 } 
+
+void Basic_Agent::set_total_volume(double volume)
+{
+	this->volume = volume;
+	volume_is_changed = true;
+	
+	// If the new volume is significantly different than the 
+	// current total volume, adjust all the sub-volumes 
+	// proportionally. 
+	
+	// if( fabs( phenotype.volume.total - volume ) < 1e-16 )
+	if( fabs( phenotype.volume.total - volume ) > 1e-16 )
+	{
+		double ratio= volume/ (phenotype.volume.total + 1e-16);  
+		phenotype.volume.multiply_by_ratio(ratio);
+	}
+	
+	phenotype.geometry.update( this, phenotype, 0.0 ); 
+	// phenotype.update_radius();
+	//if( get_container()->max_cell_interactive_distance_in_voxel[get_current_mechanics_voxel_index()] < 
+	//	phenotype.geometry.radius * parameters.max_interaction_distance_factor )
+}
+
+double& Basic_Agent::get_total_volume(void)
+{
+	static bool I_warned_you = false; 
+	if( I_warned_you == false )
+	{
+		std::cout << "Warning! Do not use " << __FUNCTION__ << "!" << std::endl 
+			<< "Use (some_cell).phenotype.volume.total instead!" << std::endl; 
+		I_warned_you = true; 
+	}
+	return phenotype.volume.total; 
+}
+
+void Basic_Agent::set_target_volume( double new_volume )
+{
+	
+	// this function will keep the prior ratios (from targets)
+	
+	// first compute the actual raw totals on all these things 
+	double old_target_solid = phenotype.volume.target_solid_nuclear + 
+		phenotype.volume.target_solid_cytoplasmic; 
+	double old_target_total = old_target_solid / ( 1.0 - phenotype.volume.target_fluid_fraction ); 
+	double old_target_fluid = phenotype.volume.target_fluid_fraction * old_target_total; 
+	
+	// next whats the relative new size? 
+	double ratio = new_volume / (1e-16 + old_target_total ); 
+	
+	// scale the target solid cyto and target solid nuclear by this ratio 
+	phenotype.volume.target_solid_cytoplasmic *= ratio; 
+	phenotype.volume.target_solid_nuclear *= ratio; 
+	
+	return; 
+}
+
+void Basic_Agent::set_target_radius(double new_radius )
+{
+	static double four_thirds_pi =  4.188790204786391;
+
+	// calculate the new target volume 
+	double new_volume = four_thirds_pi; 
+	new_volume *= new_radius; 
+	new_volume *= new_radius; 
+	new_volume *= new_radius; 
+	
+	// now call the set_target_volume funciton 
+	this->set_target_volume( new_volume ); 
+	return; 
+}
+
+void Basic_Agent::set_radius(double new_radius )
+{
+	static double four_thirds_pi =  4.188790204786391;
+
+	// calculate the new target volume 
+	double new_volume = four_thirds_pi; 
+	new_volume *= new_radius; 
+	new_volume *= new_radius; 
+	new_volume *= new_radius; 
+	
+	this->set_total_volume( new_volume ); 
+	return; 
+}
 
 };

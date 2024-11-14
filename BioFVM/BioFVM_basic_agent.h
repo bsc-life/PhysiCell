@@ -86,8 +86,13 @@ class Basic_Agent
 	bool is_active;
 	Agent_Phenotype& phenotype;
 
-	double get_total_volume();
+	double& get_total_volume();
 	void set_total_volume(double);
+	void set_target_volume(double); 
+	
+	void set_target_radius(double); 
+	void set_radius(double); 
+	
 	void update_voxel_index();
 
 	/* new for internalized substrates in 1.5.0 */ 
