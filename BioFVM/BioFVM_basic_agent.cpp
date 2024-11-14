@@ -51,6 +51,9 @@
 #include "BioFVM_vector.h" 
 #include "BioFVM_agent_phenotype.h"
 
+#include "../core/PhysiCell_utilities.h"
+#include "../core/PhysiCell_cell.h"
+
 namespace BioFVM{
 
 std::vector<Basic_Agent*> all_basic_agents(0); 
@@ -330,5 +333,63 @@ void Basic_Agent::simulate_secretion_and_uptake( Microenvironment* pS, double dt
 
 	return; 
 }
+
+void Basic_Agent::update_motility_vector( double dt_ )
+{
+	if( phenotype.motility.is_motile == false )
+	{
+		phenotype.motility.motility_vector.assign( 3, 0.0 ); 
+		return; 
+	}
+	
+	if( PhysiCell::UniformRandom() < dt_ / phenotype.motility.persistence_time || phenotype.motility.persistence_time < dt_ )
+	{
+		/*
+		// choose a uniformly random unit vector 
+		double temp_angle = 6.28318530717959*UniformRandom();
+		double temp_phi = 3.1415926535897932384626433832795*UniformRandom();
+		
+		double sin_phi = sin(temp_phi);
+		double cos_phi = cos(temp_phi);
+		
+		if( phenotype.motility.restrict_to_2D == true )
+		{ 
+			sin_phi = 1.0; 
+			cos_phi = 0.0;
+		}
+		
+		std::vector<double> randvec; 
+		randvec.resize(3,sin_phi); 
+		
+		randvec[0] *= cos( temp_angle ); // cos(theta)*sin(phi)
+		randvec[1] *= sin( temp_angle ); // sin(theta)*sin(phi)
+		randvec[2] = cos_phi; //  cos(phi)
+		*/
+		std::vector<double> randvec(3,0.0);
+		if( phenotype.motility.restrict_to_2D == true )
+		{ randvec = PhysiCell::UniformOnUnitCircle(); }
+		else
+		{ randvec = PhysiCell::UniformOnUnitSphere(); }
+
+		// if the update_bias_vector function is set, use it  
+		PhysiCell::Cell* pCell = dynamic_cast<PhysiCell::Cell*>(this);
+		if( pCell && pCell->functions.update_migration_bias )
+		{
+			pCell->functions.update_migration_bias( pCell,pCell->phenotype,dt_ ); 
+		}
+		
+		phenotype.motility.motility_vector = phenotype.motility.migration_bias_direction; // motiltiy = bias_vector
+		phenotype.motility.motility_vector *= phenotype.motility.migration_bias; // motility = bias*bias_vector 
+		
+		double one_minus_bias = 1.0 - phenotype.motility.migration_bias; 
+		
+		axpy( &(phenotype.motility.motility_vector), one_minus_bias, randvec ); // motility = (1-bias)*randvec + bias*bias_vector
+		
+		normalize( &(phenotype.motility.motility_vector) ); 
+		
+		phenotype.motility.motility_vector *= phenotype.motility.migration_speed; 
+	}	
+	return; 
+} 
 
 };

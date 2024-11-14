@@ -178,7 +178,6 @@ class Cell : public Basic_Agent
 	Cell_State state; 
 	Phenotype& phenotype; 
 	
-	void update_motility_vector( double dt_ );
 	void advance_bundled_phenotype_functions( double dt_ ); 
 	
 	void add_potentials(Cell*);       // Add repulsive and adhesive forces.

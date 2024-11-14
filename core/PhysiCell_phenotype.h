@@ -402,40 +402,6 @@ class Mechanics
 	
 };
 
-class Motility
-{
- public:
-	bool is_motile; 
- 
-	double persistence_time; // mean time to keep going in one direction 
-		// before resampling for a new direction. 
-	double migration_speed; // migration speed along chosen direction, 
-		// in absence of all other adhesive / repulsive forces 
-	
-	std::vector<double> migration_bias_direction; // a unit vector
-		// random motility is biased in this direction (e.g., chemotaxis)
-	double migration_bias; // how biased is motility
-		// if 0, completely random. if 1, deterministic along the bias vector 
-		
-	bool restrict_to_2D; 
-		// if true, set random motility to 2D only. 
-		
-	std::vector<double> motility_vector; 
-	
-	int chemotaxis_index; 
-	int chemotaxis_direction; 
-	
-	// advanced chemotaxis 
-	std::vector<double> chemotactic_sensitivities; 
-	double& chemotactic_sensitivity( std::string name ); 
-	
-	void sync_to_current_microenvironment( void ); 
-	void sync_to_microenvironment( Microenvironment* pNew_Microenvironment ); 
-	
-		
-	Motility(); // done 
-};
-
 class Cell_Functions
 {
  private:
@@ -446,7 +412,7 @@ class Cell_Functions
 
 	void (*volume_update_function)( Cell* pCell, Phenotype& phenotype , double dt ); // used in cell 
 	void (*update_migration_bias)( Cell* pCell, Phenotype& phenotype, double dt ); 
-	
+
 	void (*custom_cell_rule)( Cell* pCell, Phenotype& phenotype, double dt ); 
 	void (*update_phenotype)( Cell* pCell, Phenotype& phenotype, double dt ); // used in celll
 	
@@ -663,7 +629,6 @@ class Phenotype : public Agent_Phenotype
 	Volume volume; 
 	Geometry geometry; 
 	Mechanics mechanics; 
-	Motility motility; 
 	
 	Cell_Integrity cell_integrity; 
 

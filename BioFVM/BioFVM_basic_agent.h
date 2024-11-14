@@ -126,6 +126,8 @@ class Basic_Agent
 	std::vector<gradient>& nearest_gradient_vector( void ); 
 	
 	const std::vector<double>& get_previous_velocity( void );
+
+	void update_motility_vector( double dt_ );
 };
 
 extern std::vector<Basic_Agent*> all_basic_agents; 

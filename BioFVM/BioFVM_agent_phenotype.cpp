@@ -294,4 +294,51 @@ void Molecular::advance( Basic_Agent* pCell, Phenotype& phenotype , double dt )
 }
 */
 
+Motility::Motility()
+{
+	is_motile = false; 
+	
+	persistence_time = 1.0;
+	migration_speed = 1.0;
+	
+	migration_bias_direction.resize( 3 , 0.0 ); 
+	migration_bias = 0.0; 
+		
+	restrict_to_2D = false; 
+	
+	// update_migration_bias_direction = NULL; 
+	
+	motility_vector.resize( 3 , 0.0 ); 
+	
+	chemotaxis_index = 0; 
+	chemotaxis_direction = 1; 
+	
+	sync_to_current_microenvironment(); 
+	
+	return; 
+}
+
+void Motility::sync_to_current_microenvironment( void )
+{
+	Microenvironment* pMicroenvironment = get_default_microenvironment(); 
+	if( pMicroenvironment )
+	{ sync_to_microenvironment( pMicroenvironment ); } 
+	else
+	{ chemotactic_sensitivities.resize( 1 , 0.0 ); }
+
+	return; 
+}
+
+void Motility::sync_to_microenvironment( Microenvironment* pNew_Microenvironment )
+{
+	chemotactic_sensitivities.resize( pNew_Microenvironment->number_of_densities() , 0.0 ); 
+	return; 
+}
+
+double& Motility::chemotactic_sensitivity( std::string name )
+{
+	int n = microenvironment.find_density_index(name); 
+	return chemotactic_sensitivities[n]; 
+}
+
 }
